@@ -125,7 +125,7 @@ public class VideoListFragment extends Fragment {
         linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         videoListRvList.setLayoutManager(linearLayoutManager);
-         videoListAdapter = new VideoListAdapter(mList);
+         videoListAdapter = new VideoListAdapter(mList,getContext());
         videoListRvList.setAdapter(videoListAdapter);
         itemsPositionGetter = new RecyclerViewItemPositionGetter(linearLayoutManager, videoListRvList);
         videoListRvList.addOnScrollListener(new RecyclerView.OnScrollListener() {

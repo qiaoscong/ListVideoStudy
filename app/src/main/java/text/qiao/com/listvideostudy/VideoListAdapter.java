@@ -34,14 +34,15 @@ public class VideoListAdapter extends RecyclerView.Adapter<VideoListAdapter.Vide
      */
     private final List<VideoListItem> mList;
 
-
-    public VideoListAdapter(List<VideoListItem> mList) {
+private Context context;
+    public VideoListAdapter(List<VideoListItem> mList,Context context) {
         this.mList = mList;
+        this.context = context;
     }
 
     @Override
     public VideoViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_video, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_video, parent,false);
         VideoViewHolder videoViewHolder = new VideoViewHolder(view);
         view.setTag(videoViewHolder);
         return videoViewHolder;
@@ -130,6 +131,7 @@ public class VideoListAdapter extends RecyclerView.Adapter<VideoListAdapter.Vide
         }
 
         public void bindTo(VideoListItem videoListItem,int postion) {
+            LogUtil.e(videoListItem.getmTitle()+"第几个"+postion);
             itemVideoTvTitle.setText(videoListItem.getmTitle()+"第几个"+postion);
             itemVideoIvCover.setVisibility(View.VISIBLE);
             Picasso.get().load(videoListItem.getmImageResource()).into(itemVideoIvCover);

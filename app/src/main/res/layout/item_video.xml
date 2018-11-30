@@ -2,8 +2,8 @@
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/_320dp"
-    android:layout_marginBottom="@dimen/_54dp"
+    android:layout_height="@dimen/_330dp"
+    android:layout_marginBottom="@dimen/_4dp"
     android:layout_marginLeft="@dimen/_4dp"
     android:layout_marginRight="@dimen/_4dp"
     android:layout_marginTop="@dimen/_4dp"
@@ -12,6 +12,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+
         android:background="@color/video_place_holder_color">
 
         <!--播放器-->
@@ -19,7 +20,8 @@
             android:id="@+id/item_video_vpv_player"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_above="@+id/item_video_tv_title" />
+            android:layout_above="@+id/item_video_tv_title"
+             />
 
         <!--背景-->
         <ImageView
@@ -34,8 +36,8 @@
         <TextView
             android:id="@+id/item_video_tv_title"
             style="@style/BaseTextView"
-            android:text="年产值西欧女子穿着"
-            android:layout_alignParentBottom="true" />
+            android:layout_alignParentBottom="true"
+            android:text="年产值西欧女子穿着" />
 
         <!--百分比显示-->
         <TextView
