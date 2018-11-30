@@ -50,7 +50,7 @@ public class VideoListAdapter extends RecyclerView.Adapter<VideoListAdapter.Vide
     @Override
     public void onBindViewHolder(VideoViewHolder holder, int position) {
         VideoListItem videoListItem = mList.get(position);
-        holder.bindTo(videoListItem);
+        holder.bindTo(videoListItem,position);
         LogUtil.e("position"+position+"videoListItem.getPlayPostion()"+videoListItem.getPlayPostion());
         if (position != videoListItem.getPlayPostion()) {
             holder.getItemVideoIvCover().setVisibility(View.VISIBLE);
@@ -129,8 +129,8 @@ public class VideoListAdapter extends RecyclerView.Adapter<VideoListAdapter.Vide
             itemVideoVpvPlayer.addMediaPlayerListener(mediaPlayerListener);
         }
 
-        public void bindTo(VideoListItem videoListItem) {
-            itemVideoTvTitle.setText(videoListItem.getmTitle());
+        public void bindTo(VideoListItem videoListItem,int postion) {
+            itemVideoTvTitle.setText(videoListItem.getmTitle()+"第几个"+postion);
             itemVideoIvCover.setVisibility(View.VISIBLE);
             Picasso.get().load(videoListItem.getmImageResource()).into(itemVideoIvCover);
         }
