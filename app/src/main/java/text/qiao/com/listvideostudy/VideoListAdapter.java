@@ -17,6 +17,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import text.qiao.com.listvideostudy.item.VideoListItem;
+import text.qiao.com.utilslibrary.utils.log.LogUtil;
 
 /**
  * @project：ListVideoStudy
@@ -50,12 +51,17 @@ public class VideoListAdapter extends RecyclerView.Adapter<VideoListAdapter.Vide
     public void onBindViewHolder(VideoViewHolder holder, int position) {
         VideoListItem videoListItem = mList.get(position);
         holder.bindTo(videoListItem);
+        LogUtil.e("position"+position+"videoListItem.getPlayPostion()"+videoListItem.getPlayPostion());
+        if (position != videoListItem.getPlayPostion()) {
+            holder.getItemVideoIvCover().setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
     public int getItemCount() {
         return mList.size();
     }
+
 
     public static class VideoViewHolder extends RecyclerView.ViewHolder {
         /**
@@ -88,33 +94,35 @@ public class VideoListAdapter extends RecyclerView.Adapter<VideoListAdapter.Vide
             mediaPlayerListener = new MediaPlayerWrapper.MainThreadMediaPlayerListener() {
                 @Override
                 public void onVideoSizeChangedMainThread(int width, int height) {
-
+                    LogUtil.e("onVideoSizeChangedMainThread");
                 }
 
                 @Override
                 public void onVideoPreparedMainThread() {
                     // 视频播放隐藏前图
+                    LogUtil.e("视频播放隐藏前图");
                     itemVideoIvCover.setVisibility(View.INVISIBLE);
                 }
 
                 @Override
                 public void onVideoCompletionMainThread() {
-
+                    LogUtil.e("onVideoCompletionMainThread");
                 }
 
                 @Override
                 public void onErrorMainThread(int what, int extra) {
-
+                    LogUtil.e("onErrorMainThread");
                 }
 
                 @Override
                 public void onBufferingUpdateMainThread(int percent) {
-
+                    LogUtil.e("onBufferingUpdateMainThread");
                 }
 
                 @Override
                 public void onVideoStoppedMainThread() {
                     // 视频暂停显示前图
+                    LogUtil.e("视频暂停显示前图");
                     itemVideoIvCover.setVisibility(View.VISIBLE);
                 }
             };
@@ -125,6 +133,10 @@ public class VideoListAdapter extends RecyclerView.Adapter<VideoListAdapter.Vide
             itemVideoTvTitle.setText(videoListItem.getmTitle());
             itemVideoIvCover.setVisibility(View.VISIBLE);
             Picasso.get().load(videoListItem.getmImageResource()).into(itemVideoIvCover);
+        }
+
+        public ImageView getItemVideoIvCover() {
+            return itemVideoIvCover;
         }
 
         /**

@@ -11,6 +11,7 @@ import com.volokh.danylo.video_player_manager.meta.MetaData;
 import com.volokh.danylo.visibility_utils.items.ListItem;
 
 import text.qiao.com.listvideostudy.VideoListAdapter;
+import text.qiao.com.utilslibrary.utils.log.LogUtil;
 
 /**
  * @project：ListVideoStudy
@@ -38,7 +39,13 @@ public abstract class VideoListItem implements VideoItem,ListItem {
      */
     @DrawableRes  private final int  mImageResource;
 
-    public VideoListItem( VideoPlayerManager<MetaData> mVideoPlayerManager, String mTitle,@DrawableRes int mImageResource) {
+    private int playPostion;
+
+    public int getPlayPostion() {
+        return playPostion;
+    }
+
+    public VideoListItem(VideoPlayerManager<MetaData> mVideoPlayerManager, String mTitle, @DrawableRes int mImageResource) {
         mCurrentViewRect = new Rect();
         this.mVideoPlayerManager = mVideoPlayerManager;
         this.mTitle = mTitle;
@@ -69,6 +76,7 @@ public abstract class VideoListItem implements VideoItem,ListItem {
 
     @Override
     public void setActive(View newActiveView, int newActiveViewPosition) {
+        LogUtil.e("newActiveViewPosition"+newActiveViewPosition);
         VideoListAdapter.VideoViewHolder videoViewHolder= (VideoListAdapter.VideoViewHolder) newActiveView.getTag();
         playNewVideo(new CurrentItemMetaData(newActiveViewPosition,newActiveView),videoViewHolder.getItemVideoVpvPlayer(),mVideoPlayerManager);
     }
@@ -76,6 +84,8 @@ public abstract class VideoListItem implements VideoItem,ListItem {
 
     @Override
     public void deactivate(View currentView, int position) {
+        LogUtil.e("deactivate"+position);
+        playPostion=position;
         stopPlayback(mVideoPlayerManager);
     }
     @Override

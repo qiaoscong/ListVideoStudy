@@ -33,6 +33,7 @@ import butterknife.Unbinder;
 import text.qiao.com.listvideostudy.item.LocalVideoListItem;
 import text.qiao.com.listvideostudy.item.OnlineVideoListItem;
 import text.qiao.com.listvideostudy.item.VideoListItem;
+import text.qiao.com.utilslibrary.utils.log.LogUtil;
 
 
 /**
@@ -63,19 +64,25 @@ public class VideoListFragment extends Fragment {
      */
     private List<VideoListItem> mList;
     /**
-     * 可视估值器
+     * 可视估值器 用于判断列表中那个视频是最佳播放项
      */
     private ListItemsVisibilityCalculator mVisibilityCalculator;
 
+    /**
+     *  视频播放管理器
+     */
     private VideoPlayerManager mVideoPlayerManager;
     private LinearLayoutManager linearLayoutManager;
     private int mScrollerState;
+    private VideoListAdapter videoListAdapter;
     /**
      * 位置提取器
      */
     private ItemsPositionGetter itemsPositionGetter;
 
+    private boolean iskai=false;
     public VideoListFragment() {
+//        CustomDialog
         mList = new ArrayList<>();
         mVisibilityCalculator = new SingleListViewItemActiveCalculator(new DefaultSingleItemCalculatorCallback(), mList);
         mVideoPlayerManager = new SingleVideoPlayerManager(new PlayerItemChangeListener() {
@@ -114,16 +121,17 @@ public class VideoListFragment extends Fragment {
         if (args != null && args.getInt(VIDEO_TYPE_ARG) == MainActivity.ONLINE) {
             initOnlineVideoList();
         }
-        videoListRvList.setHasFixedSize(false);
+        videoListRvList.setHasFixedSize(true);
         linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         videoListRvList.setLayoutManager(linearLayoutManager);
-        VideoListAdapter videoListAdapter = new VideoListAdapter(mList);
+         videoListAdapter = new VideoListAdapter(mList);
         videoListRvList.setAdapter(videoListAdapter);
         itemsPositionGetter = new RecyclerViewItemPositionGetter(linearLayoutManager, videoListRvList);
         videoListRvList.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+//                LogUtil.e("onScrollStateChanged");
                 mScrollerState = newState;
                 if (mScrollerState == RecyclerView.SCROLL_STATE_IDLE && !mList.isEmpty()) {
                     mVisibilityCalculator.onScrollStateIdle(itemsPositionGetter, linearLayoutManager.findFirstVisibleItemPosition(),
@@ -134,6 +142,7 @@ public class VideoListFragment extends Fragment {
 
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+//                LogUtil.e("onScrolled");
                 if (!mList.isEmpty()) {
                     mVisibilityCalculator.onScroll(itemsPositionGetter, linearLayoutManager.findFirstVisibleItemPosition(),
                             linearLayoutManager.findLastVisibleItemPosition() - linearLayoutManager.findFirstVisibleItemPosition() + 1,
@@ -146,21 +155,31 @@ public class VideoListFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        LogUtil.e("onResume");
+        if(iskai){
+            videoListAdapter.notifyDataSetChanged();
+        }
         if(!mList.isEmpty()){
             videoListRvList.post(new Runnable() {
                 @Override
                 public void run() {
+                    LogUtil.e("linearLayoutManager.findFirstVisibleItemPosition()"+linearLayoutManager.findFirstVisibleItemPosition());
+                    LogUtil.e("linearLayoutManager.findLastVisibleItemPosition()"+linearLayoutManager.findLastVisibleItemPosition());
                     mVisibilityCalculator.onScrollStateIdle(itemsPositionGetter, linearLayoutManager.findFirstVisibleItemPosition(),
                             linearLayoutManager.findLastVisibleItemPosition());
                 }
             });
         }
+
+
     }
 
     @Override
     public void onStop() {
         super.onStop();
+        LogUtil.e("onStop");
         mVideoPlayerManager.resetMediaPlayer();
+        iskai=true;
     }
 
     @Override
